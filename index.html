@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>웨딩 퍼스널컬러 진단 체크리스트</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 0;
+        background: #f8f5f2;
+        color: #333;
+      }
+      .container {
+        max-width: 960px;
+        margin: auto;
+        padding: 20px;
+      }
+      .header {
+        background: #fff;
+        padding: 24px;
+        border-radius: 18px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        margin-bottom: 20px;
+      }
+      h1 {
+        margin: 0;
+        color: #7a5f5f;
+      }
+      .tabs {
+        display: flex;
+        gap: 10px;
+        margin: 20px 0;
+      }
+      .tab {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: #e9dfda;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .tab.active {
+        background: #7a5f5f;
+        color: #fff;
+      }
+      .section {
+        display: none;
+        background: #fff;
+        padding: 20px;
+        border-radius: 18px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      }
+      .section.active {
+        display: block;
+      }
+      .item {
+        margin: 16px 0;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      textarea,
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      textarea {
+        min-height: 70px;
+        resize: vertical;
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        position: sticky;
+        bottom: 20px;
+        margin-top: 20px;
+      }
+      button.action {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: #7a5f5f;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      @media print {
+        .tabs,
+        .actions {
+          display: none;
+        }
+        .section {
+          display: block !important;
+          box-shadow: none;
+          margin-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2 style="margin-top: 0; color: #7a5f5f">질문 진행 체크</h2>
+        <div class="item">
+          <label><input type="checkbox" /> 스튜디오/본식 구분 요청했는가</label>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 드레스 사진 보여줬는가</label>
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 원하는 메이크업 레퍼런스
+            보여줬는가</label
+          >
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 헤어 참고 사진 보여줬는가</label>
+        </div>
+      </div>
+      <div class="header">
+        <h1>웨딩 퍼스널컬러 진단 체크리스트</h1>
+        <p>스튜디오 촬영 + 본식 준비용 (자동 저장)</p>
+      </div>
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('studio', this)">
+          스튜디오
+        </button>
+        <button class="tab" onclick="showTab('wedding', this)">본식</button>
+        <button class="tab" onclick="showTab('summary', this)">최종정리</button>
+      </div>
+
+      <div id="studio" class="section active">
+        <h2>내가 꼭 물어볼 질문</h2>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 제 퍼컬 기준 웨딩에서 절대 피해야 할 색이
+            뭐예요?</label
+          >
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 촬영 메이크업과 본식 메이크업 톤이
+            달라지나요?</label
+          >
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 플래시 사진에서 얼굴 뜨지 않으려면 어떻게
+            해야 하나요?</label
+          >
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 제 톤에 가장 잘 맞는 화이트는
+            무엇인가요?</label
+          >
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 업스타일 vs 웨이브 중 뭐가 더 잘
+            받나요?</label
+          >
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 실버/골드/진주 중 어떤 장식이 가장 잘
+            어울리나요?</label
+          >
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 제가 가장 고급스러워 보이는 스타일 키워드
+            3개는?</label
+          >
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 촌스러워 보이기 쉬운 포인트
+            3가지는?</label
+          >
+        </div>
+        <h2>스튜디오 촬영 상세 체크</h2>
+        <div class="item">
+          <label><input type="checkbox" /> 웨딩 메이크업에서 피해야 할 색</label
+          ><textarea
+            data-save="studio_avoid_colors"
+            placeholder="예: 노란 코랄, 과한 오렌지"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 촬영 메이크업 밝기/강도</label
+          ><textarea
+            data-save="studio_intensity"
+            placeholder="데일리보다 얼마나 밝게/진하게?"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 베이스 질감</label
+          ><textarea
+            data-save="studio_base"
+            placeholder="세미매트 / 글로우 / 세미글로우"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 눈 음영 추천 컬러</label
+          ><textarea data-save="studio_eye"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 블러셔 추천 계열</label
+          ><textarea data-save="studio_blush"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 립 추천 (로즈/피치/모브/코랄)</label
+          ><textarea data-save="studio_lip"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 플래시 사진 안 뜨는 조합</label
+          ><textarea data-save="studio_flash"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 드레스 화이트톤</label
+          ><textarea
+            data-save="studio_white"
+            placeholder="퓨어화이트/아이보리/크림/실버화이트"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 드레스 소재</label
+          ><textarea
+            data-save="studio_material"
+            placeholder="실크/새틴/미카도/튤/레이스"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 헤어변형 1차 추천</label
+          ><textarea
+            data-save="studio_hair_1"
+            placeholder="정갈한 로우번 + 티아라"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 헤어변형 2차 추천</label
+          ><textarea
+            data-save="studio_hair_2"
+            placeholder="반묶음 웨이브 + 진주핀"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 헤어변형 3차 추천</label
+          ><textarea
+            data-save="studio_hair_3"
+            placeholder="다운웨이브 + 생화/크리스탈"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 촬영 컷별 변형 순서 추천</label
+          ><textarea
+            data-save="studio_hair_order"
+            placeholder="1컷→2컷→3컷 흐름"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 각 헤어별 어울리는 장식 매칭</label
+          ><textarea data-save="studio_hair_acc"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 염색 컬러</label
+          ><textarea data-save="studio_color"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 헤어 장식</label
+          ><textarea
+            data-save="studio_acc"
+            placeholder="실버/골드/진주/티아라"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 네일 & 부케</label
+          ><textarea data-save="studio_nail_bouquet"></textarea>
+        </div>
+      </div>
+
+      <div id="wedding" class="section">
+        <h2>본식 상세 체크</h2>
+        <div class="item">
+          <label><input type="checkbox" /> 본식 메이크업 톤</label
+          ><textarea data-save="wedding_makeup_detail"></textarea>
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 실물에서 고급스러운 베이스 표현</label
+          ><textarea data-save="wedding_base"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 본식 드레스 분위기</label
+          ><textarea
+            data-save="wedding_mood"
+            placeholder="청순/우아/화려/고급"
+          ></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 추천 네크라인</label
+          ><textarea data-save="wedding_neckline"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 실루엣 (직선/곡선)</label
+          ><textarea data-save="wedding_silhouette"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 허리 강조 여부</label
+          ><textarea data-save="wedding_waist"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 본식 헤어</label
+          ><textarea data-save="wedding_hair_detail"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 베일 / 티아라 / 귀걸이</label
+          ><textarea data-save="wedding_accessories"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 부케 컬러 및 스타일</label
+          ><textarea data-save="wedding_bouquet"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 남편 턱시도 조합</label
+          ><textarea data-save="tuxedo"></textarea>
+        </div>
+      </div>
+
+      <div id="summary" class="section">
+        <h2>최종 정리</h2>
+        <div class="item">
+          <label><input type="checkbox" /> 가장 고급스러운 키워드 3개</label
+          ><textarea data-save="keywords"></textarea>
+        </div>
+        <div class="item">
+          <label
+            ><input type="checkbox" /> 촌스러워 보이기 쉬운 포인트 3가지</label
+          ><textarea data-save="avoid_points"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 스튜디오 최종 한줄 요약</label
+          ><textarea data-save="studio_final"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 본식 최종 한줄 요약</label
+          ><textarea data-save="wedding_final"></textarea>
+        </div>
+        <div class="item">
+          <label><input type="checkbox" /> 웨딩 전체 스타일링 핵심 포인트</label
+          ><textarea data-save="core_point"></textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="action" onclick="window.print()">출력</button>
+        <button class="action" onclick="clearData()">초기화</button>
+      </div>
+    </div>
+    <script>
+      function showTab(id, btn) {
+        document
+          .querySelectorAll(".section")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("active"));
+        btn.classList.add("active");
+      }
+      document.querySelectorAll("[data-save]").forEach((el) => {
+        const key = el.dataset.save;
+        el.value = localStorage.getItem(key) || "";
+        el.addEventListener("input", () => localStorage.setItem(key, el.value));
+      });
+      function clearData() {
+        if (confirm("모든 입력 내용을 삭제할까요?")) {
+          localStorage.clear();
+          location.reload();
+        }
+      }
+    </script>
+  </body>
+</html>
