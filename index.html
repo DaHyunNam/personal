@@ -2,60 +2,72 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Wedding Personal Color App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WD 퍼컬 기록</title>
     <style>
+      * {
+        box-sizing: border-box;
+      }
       body {
         margin: 0;
-        font-family: -apple-system, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         background: #f8f4f1;
-        padding-bottom: 90px;
+        color: #3d312c;
       }
-      .wrap {
+      .app {
         max-width: 760px;
         margin: auto;
-        padding: 16px;
+        padding: 20px 16px 110px;
       }
+      .hero,
       .card {
         background: #fff;
+        border-radius: 24px;
         padding: 18px;
-        border-radius: 18px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
         margin: 14px 0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       }
-      button {
+      .input,
+      textarea {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #eadfd8;
+        border-radius: 18px;
+        font-size: 16px;
+      }
+      textarea {
+        min-height: 120px;
+      }
+      .btn {
+        width: 100%;
+        padding: 16px;
         border: none;
-        border-radius: 14px;
-        padding: 14px 18px;
+        border-radius: 18px;
         background: #8d6e63;
         color: #fff;
         font-weight: 700;
-      }
-      textarea,
-      input {
-        width: 100%;
-        padding: 14px;
-        border: 1px solid #ddd;
-        border-radius: 14px;
         margin-top: 10px;
-        box-sizing: border-box;
       }
-      textarea {
-        min-height: 100px;
+      .btn.mt8 {
+        margin-top: 8px;
       }
-      .tabbar {
+      .tabs {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
         background: #fff;
         display: flex;
+        padding: 10px;
+        gap: 8px;
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
       }
       .tab {
         flex: 1;
-        padding: 16px;
         border: none;
-        background: #fff;
+        padding: 14px;
+        border-radius: 16px;
+        background: #f4ece8;
       }
       .tab.active {
         background: #8d6e63;
@@ -67,45 +79,59 @@
       .page.active {
         display: block;
       }
+      .item {
+        padding: 16px;
+        border: 1px solid #eadfd8;
+        border-radius: 18px;
+        margin: 12px 0;
+        cursor: pointer;
+      }
+      #toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #8d6e63;
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 14px;
+        display: none;
+      }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <div id="home" class="page active">
-        <div class="card">
-          <h2>웨딩 퍼컬 기록 앱</h2>
-          <input id="sessionName" placeholder="예: 6월 스튜디오 퍼컬" /><button
-            onclick="createSession()"
-          >
-            새 진단 시작
-          </button>
-        </div>
-        <div class="card">
-          <h3>저장된 기록</h3>
-          <div id="savedList"></div>
-        </div>
+    <div id="toast">저장됨</div>
+    <div class="app">
+      <div class="hero">
+        <h1>WD 퍼컬 기록</h1>
+        <p>질문 → 답변 → 저장 → PDF</p>
       </div>
+      <div id="home" class="page active"></div>
       <div id="questions" class="page"></div>
       <div id="answers" class="page"></div>
       <div id="summary" class="page"></div>
     </div>
-    <div class="tabbar">
-      <button class="tab active" onclick="show('home', this)">홈</button
-      ><button class="tab" onclick="show('questions', this)">질문</button
-      ><button class="tab" onclick="show('answers', this)">답변</button
-      ><button class="tab" onclick="show('summary', this)">요약</button>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('home', this)">홈</button>
+      <button class="tab" onclick="showTab('questions', this)">질문</button>
+      <button class="tab" onclick="showTab('answers', this)">답변</button>
+      <button class="tab" onclick="showTab('summary', this)">요약</button>
     </div>
     <script>
       const qs = [
-        "피해야 할 색감",
+        "WD에서 피해야 할 색감",
         "촬영/본식 메이크업 차이",
-        "헤어변형 3가지",
-        "화이트톤 추천",
-        "드레스 소재",
-        "고급 키워드 3개",
+        "헤어변형 3가지 추천",
+        "가장 잘 받는 화이트톤",
+        "피해야 할 드레스 소재",
+        "가장 고급스러운 키워드 3개",
       ];
       let current = "";
-      function show(id, btn) {
+      function toast() {
+        const t = document.getElementById("toast");
+        t.style.display = "block";
+        setTimeout(() => (t.style.display = "none"), 1000);
+      }
+      function showTab(id, btn) {
         document
           .querySelectorAll(".page")
           .forEach((p) => p.classList.remove("active"));
@@ -114,56 +140,61 @@
           .querySelectorAll(".tab")
           .forEach((t) => t.classList.remove("active"));
         if (btn) btn.classList.add("active");
-        if (id === "summary") renderSummary();
+        render(id);
       }
       function createSession() {
-        current = sessionName.value || "새 진단";
+        current = document.getElementById("sessionName").value || "새 진단";
         localStorage.setItem("currentSession", current);
-        render();
-        show("questions", document.querySelectorAll(".tab")[1]);
-        loadSaved();
+        showTab("questions", document.querySelectorAll(".tab")[1]);
       }
-      function render() {
-        questions.innerHTML = qs
-          .map(
-            (q, i) =>
-              `<div class='card'><label><input type='checkbox' onchange='saveAns(${i},this.checked,null)'> ${q}</label></div>`,
-          )
-          .join("");
-        answers.innerHTML = qs
-          .map(
-            (q, i) =>
-              `<div class='card'><b>${q}</b><textarea oninput='saveAns(${i},null,this.value)'></textarea></div>`,
-          )
-          .join("");
-      }
-      function saveAns(i, c, v) {
+      function save(i, v) {
         if (!current) return;
         let d = JSON.parse(localStorage.getItem(current) || "{}");
-        if (c !== null) d["c" + i] = c;
-        if (v !== null) d["a" + i] = v;
+        d[i] = v;
         localStorage.setItem(current, JSON.stringify(d));
+        toast();
       }
-      function renderSummary() {
-        if (!current) return;
+      function get(i) {
+        if (!current) return "";
         let d = JSON.parse(localStorage.getItem(current) || "{}");
-        summary.innerHTML = `<div class='card'><h2>${current}</h2>${qs.map((q, i) => (d["a" + i] ? `<div class='card'><b>${q}</b><p>${d["a" + i]}</p></div>` : "")).join("")}<button onclick='window.print()'>PDF 저장</button></div>`;
+        return d[i] || "";
       }
-      function loadSaved() {
-        savedList.innerHTML = Object.keys(localStorage)
-          .filter((k) => !["currentSession"].includes(k))
-          .map(
-            (k) =>
-              `<div class='card'><b>${k}</b><button onclick='openSession("${k}")'>열기</button></div>`,
-          )
-          .join("");
+      function jump(i) {
+        showTab("answers", document.querySelectorAll(".tab")[2]);
+        setTimeout(() => {
+          document
+            .getElementById("ans-" + i)
+            .scrollIntoView({ behavior: "smooth" });
+          document.querySelector("#ans-" + i + " textarea").focus();
+        }, 150);
       }
-      function openSession(k) {
-        current = k;
-        show("summary", document.querySelectorAll(".tab")[3]);
+      function render(id) {
+        if (id === "home") {
+          document.getElementById("home").innerHTML =
+            `<div class='card'><input id='sessionName' class='input' placeholder='예: 6월 스튜디오 퍼컬'><button class='btn mt8' onclick='createSession()'>새 진단 시작</button></div>`;
+        }
+        if (id === "questions") {
+          document.getElementById("questions").innerHTML = qs
+            .map(
+              (q, i) =>
+                `<div class='item' onclick='jump(${i})'><input type='checkbox'> <b>${q}</b><div style='font-size:13px;margin-top:8px'>클릭하면 답변 입력으로 이동</div></div>`,
+            )
+            .join("");
+        }
+        if (id === "answers") {
+          document.getElementById("answers").innerHTML = qs
+            .map(
+              (q, i) =>
+                `<div class='card' id='ans-${i}'><b>${q}</b><textarea oninput='save(${i},this.value)'>${get(i)}</textarea></div>`,
+            )
+            .join("");
+        }
+        if (id === "summary") {
+          document.getElementById("summary").innerHTML =
+            `<div class='card'><h2>${current || "진단 결과"}</h2>${qs.map((q, i) => (get(i) ? `<div class='item'><b>${q}</b><p>${get(i)}</p></div>` : "")).join("")}<button class='btn' onclick='toast()'>중간 저장</button><button class='btn' onclick='window.print()'>PDF 저장</button></div>`;
+        }
       }
-      render();
-      loadSaved();
+      render("home");
     </script>
   </body>
 </html>
