@@ -3,87 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>웨딩 체크리스트</title>
+    <title>퍼컬 체크</title>
     <style>
       body {
         margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: -apple-system, sans-serif;
         background: #f8f4f1;
         padding-bottom: 90px;
       }
       .container {
         padding: 16px;
-        max-width: 700px;
-        margin: auto;
       }
       .header {
-        background: #fff;
-        padding: 18px;
-        border-radius: 18px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         position: sticky;
         top: 0;
-        z-index: 10;
-      }
-      .progress {
-        height: 8px;
-        background: #eee;
-        border-radius: 99px;
-        overflow: hidden;
-        margin-top: 10px;
-      }
-      .bar {
-        height: 100%;
-        background: #8d6e63;
-        width: 0%;
+        background: #fff;
+        padding: 16px;
+        border-radius: 16px;
       }
       .card {
         background: #fff;
         padding: 16px;
-        border-radius: 18px;
-        margin: 14px 0;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-      }
-      label {
-        display: flex;
-        gap: 12px;
-        font-size: 16px;
-        font-weight: 600;
-        align-items: flex-start;
-      }
-      input[type="checkbox"] {
-        transform: scale(1.6);
-        margin-top: 4px;
-      }
-      textarea {
-        width: 100%;
-        min-height: 92px;
-        margin-top: 12px;
-        padding: 14px;
-        border-radius: 14px;
-        border: 1px solid #ddd;
-        font-size: 16px;
-        box-sizing: border-box;
-      }
-      .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #fff;
-        display: flex;
-        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
-      }
-      .nav-btn {
-        flex: 1;
-        border: none;
-        padding: 16px;
-        background: #fff;
-        font-weight: 700;
-      }
-      .nav-btn.active {
-        background: #8d6e63;
-        color: #fff;
+        border-radius: 16px;
+        margin: 12px 0;
       }
       .section {
         display: none;
@@ -91,100 +33,68 @@
       .section.active {
         display: block;
       }
-      button.action {
-        width: 100%;
-        padding: 18px;
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        background: #fff;
+      }
+      .nav-btn {
+        flex: 1;
+        padding: 16px;
         border: none;
-        border-radius: 16px;
+      }
+      .nav-btn.active {
         background: #8d6e63;
         color: #fff;
-        font-size: 16px;
-        font-weight: 700;
-        margin-top: 16px;
+      }
+      textarea {
+        width: 100%;
+        min-height: 100px;
+        margin-top: 10px;
+      }
+      input[type="checkbox"] {
+        transform: scale(1.5);
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="header">
-        <h2>웨딩 퍼컬 체크</h2>
-        <div class="progress"><div class="bar" id="bar"></div></div>
-        <small id="count">0 / 0 완료</small>
-      </div>
-      <div id="studio" class="section active"></div>
-      <div id="wedding" class="section"></div>
-      <div id="summary" class="section"></div>
-      <button class="action" onclick="window.print()">출력</button>
+      <div class="header"><h2>웨딩 퍼컬 체크</h2></div>
+      <div id="questions" class="section active"></div>
+      <div id="answers" class="section"></div>
     </div>
     <div class="bottom-nav">
-      <button class="nav-btn active" onclick="show('studio', this)">촬영</button
-      ><button class="nav-btn" onclick="show('wedding', this)">본식</button
-      ><button class="nav-btn" onclick="show('summary', this)">정리</button>
+      <button class="nav-btn active" onclick="show('questions', this)">
+        질문</button
+      ><button class="nav-btn" onclick="show('answers', this)">답변</button>
     </div>
     <script>
-      const data = {
-        studio: [
-          "피해야 할 색",
-          "촬영 메이크업 톤",
-          "헤어변형 1차",
-          "헤어변형 2차",
-          "헤어변형 3차",
-          "변형 순서",
-          "플래시 대응",
-          "화이트톤",
-          "드레스 소재",
-          "헤어 장식",
-          "네일/부케",
-        ],
-        wedding: [
-          "본식 메이크업",
-          "드레스 무드",
-          "네크라인",
-          "실루엣",
-          "본식 헤어",
-          "티아라/베일",
-          "턱시도 조합",
-        ],
-        summary: [
-          "고급 키워드 3개",
-          "피해야 할 포인트",
-          "스튜디오 최종",
-          "본식 최종",
-        ],
-      };
+      const items = [
+        "피해야 할 색",
+        "촬영/본식 메이크업 차이",
+        "화이트톤 추천",
+        "드레스 소재",
+        "헤어변형 3가지",
+        "장식 추천",
+        "네일 추천",
+        "고급 키워드 3개",
+      ];
       function render() {
-        Object.keys(data).forEach((k) => {
-          const el = document.getElementById(k);
-          el.innerHTML = data[k]
-            .map(
-              (q, i) =>
-                `<div class='card'><label><input type='checkbox' class='chk'>${q}</label><textarea placeholder='답변 메모'></textarea></div>`,
-            )
-            .join("");
-        });
-        bind();
-      }
-      function bind() {
-        document.querySelectorAll("textarea").forEach((t, i) => {
-          t.value = localStorage.getItem("t" + i) || "";
-          t.oninput = () => localStorage.setItem("t" + i, t.value);
-        });
-        document.querySelectorAll(".chk").forEach((c, i) => {
-          c.checked = localStorage.getItem("c" + i) === "1";
-          c.onchange = () => {
-            localStorage.setItem("c" + i, c.checked ? "1" : "0");
-            update();
-          };
-        });
-        update();
-      }
-      function update() {
-        const all = document.querySelectorAll(".chk");
-        const checked = [...all].filter((c) => c.checked).length;
-        document.getElementById("count").textContent =
-          `${checked} / ${all.length} 완료`;
-        document.getElementById("bar").style.width =
-          (checked / all.length) * 100 + "%";
+        questions.innerHTML = items
+          .map(
+            (q, i) =>
+              `<div class='card' onclick='jump(${i})'><label><input type=checkbox> ${q}</label></div>`,
+          )
+          .join("");
+        answers.innerHTML = items
+          .map(
+            (q, i) =>
+              `<div class='card' id='a${i}'><b>${q}</b><textarea placeholder='답변 입력'></textarea></div>`,
+          )
+          .join("");
       }
       function show(id, btn) {
         document
@@ -195,6 +105,15 @@
           .querySelectorAll(".nav-btn")
           .forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
+      }
+      function jump(i) {
+        show("answers", document.querySelectorAll(".nav-btn")[1]);
+        setTimeout(() => {
+          document
+            .getElementById("a" + i)
+            .scrollIntoView({ behavior: "smooth" });
+          document.querySelector("#a" + i + " textarea").focus();
+        }, 150);
       }
       render();
     </script>
